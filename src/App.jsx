@@ -1,20 +1,10 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";  
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";  
 import { ThemeProvider } from "./context/ThemeContext";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // Import Home Layout
 import HomeLayout from "./pages/HomeLayout";
-
-// Import Admin Dashboard Components
-import AdminDashboard from "./pages/admin/Dashboard";
-import DashboardOverview from "./pages/admin/DashboardOverview";
-import UserManagement from "./pages/admin/UserManagement";
-import CourseManagement from "./pages/admin/CourseManagement";
-import CategoryManagement from "./pages/admin/CategoryManagement";
-import AnalyticsPage from "./pages/admin/AnalyticsPage";
-import NotificationsPage from "./pages/admin/NotificationsPage";
-import CourseDetail from "./pages/admin/CourseDetail";
 
 // Import User Dashboard Components
 import UserDashboard from "./pages/user/Dashboard";
@@ -28,8 +18,20 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import LectureDetails from "./components/lectures/LectureDetails";
 import LessonView from "./components/lectures/LessonView";
-import LessonManagement from "./pages/admin/LessonManagement";
-import QuestionManagement from "./pages/admin/QuestionManagement";
+
+// Mock authentication check function (replace with real implementation)
+const isAuthenticated = () => !!localStorage.getItem("token");
+
+// Higher-Order Component to protect routes
+const RequireAuth = ({ children }) => {
+    return isAuthenticated() ? children : <Navigate to="/login" replace />;
+};
+
+// Higher-Order Component to redirect logged-in users from login page
+const RedirectIfAuthenticated = ({ children }) => {
+    const previousPage = document.referrer || "/"; // Get the previous page or default to "/"
+    return isAuthenticated() ? <Navigate to={previousPage} replace /> : children;
+};
 
 const router = createBrowserRouter([
     {
@@ -38,57 +40,23 @@ const router = createBrowserRouter([
     },
     {
         path: "/login",
-        element: <LoginPage />
+        element: (
+            <RedirectIfAuthenticated>
+                <LoginPage />
+            </RedirectIfAuthenticated>
+        )
     },
     {
         path: "/register",
         element: <RegisterPage />
     },
     {
-        path: "/admin",
-        element: <AdminDashboard />,
-        children: [
-            {
-                index: true,
-                element: <DashboardOverview />,
-            },
-            {
-                path: "users",
-                element: <UserManagement />,
-            },
-            {
-                path: "courses",
-                element: <CourseManagement />,
-            },
-            {
-                path: "categories",
-                element: <CategoryManagement />,
-            },
-            {
-                path: "analytics",
-                element: <AnalyticsPage />,
-            },
-            {
-                path: "notifications",
-                element: <NotificationsPage />,
-            },
-            {
-                path:"lecture/:id/details",
-                element: <LessonManagement/>
-            },
-            {
-                path:"course/:id",
-                element: <CourseDetail/>
-            },
-            {
-                path:"quiz/:quizId/questions",
-                element: <QuestionManagement/>
-            }
-        ],
-    },
-    {
         path: "/user",
-        element: <UserDashboard />,
+        element: (
+            <RequireAuth>
+                <UserDashboard />
+            </RequireAuth>
+        ),
         children: [
             {
                 index: true,
@@ -99,12 +67,12 @@ const router = createBrowserRouter([
                 element: <LecturesAndMaterials />,
             },
             {
-                path:"lecture/:id",
-                element: <LectureDetails/>
+                path: "lecture/:id",
+                element: <LectureDetails />
             },
             {
-                path:"learn/:course_id/lesson/:lesson_id",
-                element: <LessonView/>
+                path: "learn/:course_id/lesson/:lesson_id",
+                element: <LessonView />
             },
             {
                 path: "quizzes",

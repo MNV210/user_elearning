@@ -22,7 +22,7 @@ const HomeLayout = () => {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
             <Link
               to="/user"
               className={`p-8 rounded-xl shadow-lg transition-all hover:shadow-xl ${
@@ -42,24 +42,7 @@ const HomeLayout = () => {
               </div>
             </Link>
 
-            <Link
-              to="/admin"
-              className={`p-8 rounded-xl shadow-lg transition-all hover:shadow-xl ${
-                isDark ? "bg-gray-800 hover:bg-gray-750" : "bg-white hover:bg-gray-50"
-              }`}
-            >
-              <div className="mb-4 p-4 rounded-full inline-block bg-purple-100">
-                <span className="material-icons text-purple-600 text-4xl">admin_panel_settings</span>
-              </div>
-              <h2 className="text-2xl font-bold mb-4">Bảng Điều Khiển Quản Trị</h2>
-              <p className={`mb-6 ${isDark ? "text-gray-300" : "text-gray-600"}`}>
-                Quản lý người dùng, khóa học, xem phân tích và xử lý các nhiệm vụ quản trị.
-              </p>
-              <div className="flex items-center text-purple-600">
-                <span>Vào bảng điều khiển</span>
-                <span className="material-icons ml-2">arrow_forward</span>
-              </div>
-            </Link>
+           
           </div>
 
           <div className={`mt-16 p-6 rounded-lg ${isDark ? "bg-gray-800" : "bg-white"} shadow-md`}>
