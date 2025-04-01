@@ -1,42 +1,63 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import chatService from "../../services/chatService";
+import axios from "axios";
 
 const ChatTab = ({ isDark, lecture }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const params = useParams()
-  console.log(params)
-  // const handleSendMessage = (e) => {
-  //   e.preventDefault();
+
+  const [loading, setLoading] = useState(false);
+
+  const createMessage = async(message,type) => {
+    const userMessage = {   
+      type: type,
+      message: message,
+      course_id: params.course_id
+    };
+      await chatService.sendMessage(userMessage).then(response => {
+      getAllMesssage()
+      setNewMessage("")
+    })
+  };  
+
+
+  const handleSendMessage = async(e) => {
+    e.preventDefault();
     
-  //   if (!newMessage.trim()) return;
+    if (!newMessage.trim()) return;
     
-  //   // Add user message
-  //   const userMessage = {
-  //     id: messages.length + 1,
-  //     type: "user",
-  //     text: newMessage,
-  //     timestamp: new Date().toISOString()
-  //   };
+    const userMessage = {
+      message: newMessage,
+      course_id: params.course_id
+    };
+    createMessage(userMessage,'user')
+    callApiAi(newMessage)
     
-  //   // Simulate system response
-  //   const systemResponse = {
-  //     id: messages.length + 2,
-  //     type: "system",
-  //     text: `Cảm ơn câu hỏi của bạn về "${newMessage}". Giảng viên sẽ phản hồi sớm nhất có thể.`,
-  //     timestamp: new Date().toISOString()
-  //   };
-    
-  //   setMessages([...messages, userMessage, systemResponse]);
-  //   setNewMessage("");
-  // };
+  };
+
+  const callApiAi = async (question) => {
+    try {
+      setLoading(true);
+      // Call AI API to get the response
+      const response = await axios.post('http://localhost:8000/api/test_ai', 
+            { question },
+            { timeout: 600000 }
+      );
+      await createMessage(response.data.answer, 'ai');
+      return response.data.answer;
+    } catch (error) { 
+      console.error('Error fetching AI response:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getAllMesssage= async() => {
     const response = await chatService.getAllMessage({
       course_id : params.course_id
     })
-    console.log(response.data)
     setMessages(response.data)
   }
 
@@ -44,10 +65,10 @@ const ChatTab = ({ isDark, lecture }) => {
     getAllMesssage()
   },[])
 
-  const formatTime = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  };
+  // const formatTime = (timestamp) => {
+  //   const date = new Date(timestamp);
+  //   return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  // };
 
   return (
     <div className="h-full flex flex-col p-4">
@@ -84,7 +105,7 @@ const ChatTab = ({ isDark, lecture }) => {
       
       {/* Message input */}
       <div className={`${isDark ? "bg-gray-700" : "bg-gray-100"} rounded-lg p-2`}>
-        <form className="flex items-center">
+        <form onSubmit={handleSendMessage} className="flex items-center">
           <input
             type="text"
             value={newMessage}

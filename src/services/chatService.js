@@ -9,6 +9,22 @@ const chatService = {
         } catch (error) {
             
         }
-    }
+    },
+    sendMessage : async(data) => {
+        try {
+            const response = await apiClient.post('/chatbot-conversations',data)
+            return response.data
+        } catch (error) {
+            return error
+        }   
+    },
+    // sendMessageAi : async(data) => {
+    //     try {
+    //         const response = await apiClient.post('/chatbot-conversations/ai',data)
+    //         return response.data
+    //     } catch (error) {
+    //         return error
+    //     }   
+    // }
 }
 export default chatService
