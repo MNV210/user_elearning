@@ -18,6 +18,14 @@ const chatService = {
             return error
         }   
     },
+    test : async () => {
+        try {
+                    const response = await apiClient.get('/test')
+                    return response.data
+                } catch (error) {
+                    return error
+                }
+    }
     // sendMessageAi : async(data) => {
     //     try {
     //         const response = await apiClient.post('/chatbot-conversations/ai',data)

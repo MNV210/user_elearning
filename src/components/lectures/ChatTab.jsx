@@ -27,12 +27,7 @@ const ChatTab = ({ isDark, lecture }) => {
     e.preventDefault();
     
     if (!newMessage.trim()) return;
-    
-    const userMessage = {
-      message: newMessage,
-      course_id: params.course_id
-    };
-    createMessage(userMessage,'user')
+    createMessage(newMessage,'user')
     callApiAi(newMessage)
     
   };
@@ -41,12 +36,8 @@ const ChatTab = ({ isDark, lecture }) => {
     try {
       setLoading(true);
       // Call AI API to get the response
-      const response = await axios.post('http://localhost:8000/api/test_ai', 
-            { question },
-            { timeout: 600000 }
-      );
-      await createMessage(response.data.answer, 'ai');
-      return response.data.answer;
+      const response = await chatService.test(); 
+      await createMessage(response.message, 'ai');
     } catch (error) { 
       console.error('Error fetching AI response:', error);
     } finally {
