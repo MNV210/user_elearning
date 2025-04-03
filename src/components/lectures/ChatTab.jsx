@@ -63,10 +63,15 @@ const ChatTab = ({ isDark, lecture }) => {
 
   return (
     <div className="h-full flex flex-col p-4">
-      {/* Chat messages */}
+      {/* Chat messages - với chiều cao cố định */}
       <div 
-        className={`flex-1 overflow-y-auto p-3 ${isDark ? "bg-gray-700" : "bg-gray-100"} rounded-lg mb-3`} 
-        style={{ minHeight: "300px", maxHeight: "calc(100vh-260px)" }}
+        className={`overflow-y-auto p-3 ${isDark ? "bg-gray-700" : "bg-gray-100"} rounded-lg mb-3`} 
+        style={{ 
+          height: "500px", 
+          flexGrow: 0, 
+          flexShrink: 0, 
+          flexBasis: "auto"
+        }}
       >
         {messages.map(message => (
           <div 
@@ -125,4 +130,4 @@ const ChatTab = ({ isDark, lecture }) => {
   );
 };
 
-export default ChatTab; 
+export default ChatTab;

@@ -9,6 +9,8 @@ const LectureList = ({ lectures, isDark, onLectureClick, onFilterChange }) => {
   const [loading, setLoading] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
 
+  console.log(lectures);
+
   // Fetch categories when component mounts
   useEffect(() => {
     fetchCategories();
@@ -202,12 +204,12 @@ const LectureList = ({ lectures, isDark, onLectureClick, onFilterChange }) => {
                 <div className="flex flex-wrap text-sm mb-2">
                   <span className={`mr-3 ${isDark ? "text-gray-300" : "text-gray-600"}`}>
                     <span className="material-icons text-sm align-text-bottom mr-1">person</span>
-                    {lecture.instructor}
+                    {lecture.teacher.name}
                   </span>
-                  <span className={`mr-3 ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+                  {/* <span className={`mr-3 ${isDark ? "text-gray-300" : "text-gray-600"}`}>
                     <span className="material-icons text-sm align-text-bottom mr-1">schedule</span>
                     {lecture.duration}
-                  </span>
+                  </span> */}
                   <span className={`${isDark ? "text-gray-300" : "text-gray-600"}`}>
                     <span className="material-icons text-sm align-text-bottom mr-1">signal_cellular_alt</span>
                     {lecture.level}

@@ -1,10 +1,19 @@
 import React, { useState } from "react";
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext";
 
 const UserDashboard = () => {
   const { theme } = useTheme();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const navigate = useNavigate();
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    // Remove all tokens from localStorage
+    localStorage.clear();
+    // Navigate to login page
+    navigate("/login");
+  };
 
   return (
     <div className={`flex h-screen ${theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"}`}>
@@ -12,7 +21,7 @@ const UserDashboard = () => {
       <div 
         className={`${sidebarOpen ? "w-64" : "w-20"} ${
           theme === "dark" ? "bg-gray-800" : "bg-white"
-        } p-4 transition-all duration-300 shadow-lg`}
+        } p-4 transition-all duration-300 shadow-lg flex flex-col`}
       >
         <div className="flex justify-between items-center mb-8">
           <h2 className={`font-bold text-xl ${sidebarOpen ? "" : "hidden"}`}>Hệ Thống Học Tập</h2>
@@ -24,7 +33,7 @@ const UserDashboard = () => {
           </button>
         </div>
 
-        <nav className="space-y-2">
+        <nav className="space-y-2 flex-grow">
           <NavLink 
             to="/user" 
             end
@@ -116,6 +125,21 @@ const UserDashboard = () => {
             {sidebarOpen && <span>Diễn Đàn Thảo Luận</span>}
           </NavLink> */}
         </nav>
+        
+        {/* Logout Button at the bottom of sidebar */}
+        <button 
+          onClick={handleLogout}
+          className={`flex items-center p-3 rounded-lg transition-colors mt-auto ${
+            sidebarOpen ? "justify-start" : "justify-center"
+          } ${
+            theme === "dark" 
+              ? "text-red-400 hover:bg-red-900 hover:bg-opacity-20" 
+              : "text-red-600 hover:bg-red-100"
+          }`}
+        >
+          <span className="material-icons mr-2">logout</span>
+          {sidebarOpen && <span>Đăng Xuất</span>}
+        </button>
       </div>
 
       {/* Main Content */}
@@ -142,4 +166,4 @@ const UserDashboard = () => {
   );
 };
 
-export default UserDashboard; 
+export default UserDashboard;
