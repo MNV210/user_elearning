@@ -79,7 +79,7 @@ const LessonSidebar = ({
   return (
     <div className="p-4">
       <h2 className="text-lg font-semibold mb-4">Danh sách bài học</h2>
-      <div className="space-y-4 max-h-[calc(100vh-260px)] overflow-y-auto pr-2">
+      <div className="space-y-4 h-80 overflow-y-auto pr-2">
         <ul className="space-y-2">
           {lecture?.lessons?.map(lesson => {
             const unlocked = isLessonUnlocked(lesson.id);
@@ -106,7 +106,7 @@ const LessonSidebar = ({
                     <span className="material-icons mr-2 text-lg">
                       {!unlocked ? "lock" : lesson.type === "video" ? "play_circle" : "description"}
                     </span>
-                    <span className="font-medium text-sm">{lesson.title}</span>
+                    <span className="font-medium text-sm truncate max-w-xs">{lesson.title}</span>
                   </div>
                   <div className="flex items-center">
                     {lesson.type === "video" ? (
