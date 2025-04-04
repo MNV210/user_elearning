@@ -181,14 +181,14 @@ const LectureList = ({ lectures, isDark, onLectureClick, onFilterChange }) => {
         {filteredLectures?.length > 0 ? (
           filteredLectures.map(lecture => (
             <div 
-              key={lecture.id} 
+              key={lecture?.id} 
               className={`${isDark ? "bg-gray-800" : "bg-white"} rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer`}
               onClick={() => onLectureClick(lecture)}
             >
               <div className="h-40 bg-gray-300 relative overflow-hidden">
                 <img 
-                  src={lecture.thumbnail} 
-                  alt={lecture.title} 
+                  src={lecture?.thumbnail} 
+                  alt={lecture?.title} 
                   className="w-full h-full object-cover"
                 />
                 {lecture.category?.name && (
@@ -204,7 +204,7 @@ const LectureList = ({ lectures, isDark, onLectureClick, onFilterChange }) => {
                 <div className="flex flex-wrap text-sm mb-2">
                   <span className={`mr-3 ${isDark ? "text-gray-300" : "text-gray-600"}`}>
                     <span className="material-icons text-sm align-text-bottom mr-1">person</span>
-                    {lecture.teacher.name}
+                    {lecture.teacher?.name}
                   </span>
                   {/* <span className={`mr-3 ${isDark ? "text-gray-300" : "text-gray-600"}`}>
                     <span className="material-icons text-sm align-text-bottom mr-1">schedule</span>
@@ -212,11 +212,11 @@ const LectureList = ({ lectures, isDark, onLectureClick, onFilterChange }) => {
                   </span> */}
                   <span className={`${isDark ? "text-gray-300" : "text-gray-600"}`}>
                     <span className="material-icons text-sm align-text-bottom mr-1">signal_cellular_alt</span>
-                    {lecture.level}
+                    {lecture?.level}
                   </span>
                 </div>
                 <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"} line-clamp-2`}>
-                  {lecture.description}
+                  {lecture?.description}
                 </p>
               </div>
             </div>
