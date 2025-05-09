@@ -19,6 +19,7 @@ const ChatTab = ({ isDark, lecture }) => {
       await chatService.sendMessage(userMessage).then(response => {
       getAllMesssage()
       setNewMessage("")
+      console.log("set chat user")
     })
   };  
 
@@ -28,7 +29,9 @@ const ChatTab = ({ isDark, lecture }) => {
     
     if (!newMessage.trim()) return;
     createMessage(newMessage,'user')
+    console.log(newMessage)
     callApiAi(newMessage)
+    console.log("chat ai")
     
   };
 
@@ -36,8 +39,9 @@ const ChatTab = ({ isDark, lecture }) => {
     try {
       setLoading(true);
       // Call AI API to get the response
-      const response = await chatService.test(); 
-      await createMessage(response.message, 'ai');
+      const response = await chatService.chatAI(question);
+      console.log(response) 
+      await createMessage(response.answer, 'ai');
     } catch (error) { 
       console.error('Error fetching AI response:', error);
     } finally {
